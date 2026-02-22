@@ -477,7 +477,7 @@ async function runHoldingsCommand(command, jsonMode) {
   ].filter((entry) => entry.value !== 0);
 
   if (!fundLines.length) {
-    console.log("No non-zero balances.");
+    console.log("No idle funds available.");
   } else {
     for (const entry of fundLines) {
       console.log(`${entry.label}: ${formatIndianNumber(entry.value, 2)}`);

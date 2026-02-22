@@ -1,4 +1,4 @@
-# zoro
+# Zoro-CLI (CLI for Zerodha's Kite APIs)
 
 `zoro` is an unofficial command-line client for interacting with Zerodha's Kite API.
 

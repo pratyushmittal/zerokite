@@ -1,0 +1,20 @@
+{
+  "name": "zerodha-cli",
+  "version": "0.1.0",
+  "description": "CLI for Zerodha Kite API",
+  "main": "src/cli.js",
+  "bin": {
+    "zerodha-cli": "bin/zerodha-cli.js"
+  },
+  "scripts": {
+    "start": "node bin/zerodha-cli.js",
+    "help": "node bin/zerodha-cli.js help"
+  },
+  "keywords": [
+    "zerodha",
+    "kite",
+    "cli",
+    "nodejs"
+  ],
+  "license": "MIT"
+}

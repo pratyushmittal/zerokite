@@ -8,20 +8,39 @@ function printTable(rows, columns) {
   const normalizedRows = rows.map((row) =>
     columns.map((column, columnIndex) => {
       const value = row[column.key];
+      const formattedValue = column.format ? column.format(value, row) : value;
       const text = value === undefined || value === null ? "" : String(value);
+      const finalText =
+        formattedValue === undefined || formattedValue === null
+          ? ""
+          : String(formattedValue);
       widths[columnIndex] = Math.max(widths[columnIndex], text.length);
-      return text;
+      widths[columnIndex] = Math.max(widths[columnIndex], finalText.length);
+      return finalText;
     })
   );
 
   const header = columns
-    .map((column, index) => column.header.padEnd(widths[index], " "))
+    .map((column, index) => {
+      if (column.align === "right") {
+        return column.header.padStart(widths[index], " ");
+      }
+      return column.header.padEnd(widths[index], " ");
+    })
     .join("  ");
   const divider = widths.map((width) => "-".repeat(width)).join("  ");
   console.log(header);
   console.log(divider);
-  for (const row of normalizedRows) {
-    console.log(row.map((cell, index) => cell.padEnd(widths[index], " ")).join("  "));
+  for (const normalizedRow of normalizedRows) {
+    const line = normalizedRow
+      .map((cell, index) => {
+        if (columns[index].align === "right") {
+          return cell.padStart(widths[index], " ");
+        }
+        return cell.padEnd(widths[index], " ");
+      })
+      .join("  ");
+    console.log(line);
   }
 }
 

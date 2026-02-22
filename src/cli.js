@@ -80,6 +80,15 @@ function assert(value, message) {
   }
 }
 
+function numberOrZero(value) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : 0;
+}
+
+function formatFixed(value, decimals = 2) {
+  return numberOrZero(value).toFixed(decimals);
+}
+
 function resolveAuthContext() {
   const session = loadSession();
   const apiKey = process.env.KITE_API_KEY || (session && session.api_key);
@@ -374,15 +383,27 @@ async function runHoldingsCommand(command, jsonMode) {
   const equityFunds = data.funds.equity && data.funds.equity.available
     ? data.funds.equity.available
     : {};
+  const totalCostValue = holdings.reduce(
+    (sum, holding) => sum + numberOrZero(holding.quantity) * numberOrZero(holding.average_price),
+    0
+  );
+  const totalLtpValue = holdings.reduce(
+    (sum, holding) => sum + numberOrZero(holding.quantity) * numberOrZero(holding.last_price),
+    0
+  );
 
   console.log(`Holdings: ${holdings.length}`);
   printTable(holdings, [
     { header: "Symbol", key: "tradingsymbol" },
-    { header: "Qty", key: "quantity" },
-    { header: "Avg", key: "average_price" },
-    { header: "LTP", key: "last_price" },
-    { header: "PnL", key: "pnl" }
+    { header: "Qty", key: "quantity", align: "right" },
+    { header: "Avg", key: "average_price", align: "right", format: (value) => formatFixed(value, 2) },
+    { header: "LTP", key: "last_price", align: "right", format: (value) => formatFixed(value, 2) },
+    { header: "PnL", key: "pnl", align: "right", format: (value) => formatFixed(value, 2) }
   ]);
+  console.log("");
+  console.log("Holding Totals:");
+  console.log(`Cost Value: ${formatFixed(totalCostValue, 2)}`);
+  console.log(`LTP Value: ${formatFixed(totalLtpValue, 2)}`);
   console.log("");
   console.log("Available Funds (Equity):");
   console.log(`Cash: ${equityFunds.cash || 0}`);

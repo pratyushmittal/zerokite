@@ -10,16 +10,30 @@ Provide a fast and scriptable way to use Kite APIs directly from the terminal wi
 
 - Node.js (18+ recommended)
 
-## Setup
+## Installation
 
-1. Install and link:
+Install from npm:
+
+```bash
+npm install -g zerokite
+```
+
+Verify install:
+
+```bash
+zerokite help
+```
+
+## Local Development Setup
+
+1. Clone this repo and install dependencies:
 
 ```bash
 npm install
 npm link
 ```
 
-2. Verify install:
+2. Verify linked local CLI:
 
 ```bash
 zerokite help
@@ -28,6 +42,8 @@ zerokite help
 ## Kite App Configuration
 
 Create a Kite Connect app and configure:
+
+- Create app: https://developers.kite.trade/create
 
 - `api_key`
 - `api_secret`

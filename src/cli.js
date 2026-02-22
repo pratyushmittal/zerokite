@@ -1,3 +1,4 @@
+const fs = require("fs");
 const http = require("http");
 const path = require("path");
 const { URL } = require("url");
@@ -20,6 +21,7 @@ Usage:
 Commands:
   help                               Show help
   version                            Show CLI version
+  completion <bash|zsh>              Print shell completion script
   auth [-p <port>]                   Start callback server and login flow
   login [-p <port>]                  Alias of auth
   verify                             Verify stored access token
@@ -40,6 +42,36 @@ function printVersion() {
   const packageJsonPath = path.join(__dirname, "..", "package.json");
   const packageJson = require(packageJsonPath);
   console.log(packageJson.version);
+}
+
+function runCompletionCommand(commandArgs) {
+  const { positionals } = parseArgs(commandArgs);
+  const shellName = positionals[0];
+
+  if (!shellName) {
+    throw new CliError("Missing shell name. Use `zerokite completion bash` or `zerokite completion zsh`.");
+  }
+
+  const fileMap = {
+    bash: "zerokite.bash",
+    zsh: "_zerokite"
+  };
+  const completionFile = fileMap[shellName];
+
+  if (!completionFile) {
+    throw new CliError("Unsupported shell. Supported values: bash, zsh.");
+  }
+
+  const completionPath = path.join(__dirname, "..", "completions", completionFile);
+  if (!fs.existsSync(completionPath)) {
+    throw new CliError(`Completion script not found at ${completionPath}.`);
+  }
+
+  const script = fs.readFileSync(completionPath, "utf8");
+  process.stdout.write(script);
+  if (!script.endsWith("\n")) {
+    process.stdout.write("\n");
+  }
 }
 
 function assert(value, message) {
@@ -542,6 +574,11 @@ async function main(rawArgv) {
 
   if (command === "version" || command === "--version" || command === "-v") {
     printVersion();
+    return;
+  }
+
+  if (command === "completion") {
+    runCompletionCommand(argv.slice(1));
     return;
   }
 

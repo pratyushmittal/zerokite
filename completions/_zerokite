@@ -1,0 +1,101 @@
+#compdef zerokite
+
+_zerokite() {
+  local -a commands order_subcommands
+
+  commands=(
+    "help:Show help"
+    "version:Show CLI version"
+    "completion:Print shell completion script"
+    "auth:Start callback server and login flow"
+    "login:Alias of auth"
+    "verify:Verify stored access token"
+    "profile:Fetch user profile"
+    "holdings:Fetch holdings and funds"
+    "positions:Fetch positions"
+    "orders:Manage orders"
+  )
+
+  order_subcommands=(
+    "list:List orders"
+    "place:Place an order"
+    "modify:Modify an order"
+    "cancel:Cancel an order"
+  )
+
+  if (( CURRENT == 2 )); then
+    _describe -t commands "zerokite commands" commands
+    return
+  fi
+
+  case "${words[2]}" in
+    completion)
+      _arguments \
+        "1:shell:(bash zsh)"
+      ;;
+    auth|login)
+      _arguments \
+        "--json[Print JSON output]" \
+        "-p[Callback port]:port:" \
+        "--port[Callback port]:port:"
+      ;;
+    verify|profile|holdings)
+      _arguments "--json[Print JSON output]"
+      ;;
+    positions)
+      _arguments \
+        "--day[Show day positions]" \
+        "--net[Show net positions]" \
+        "--json[Print JSON output]"
+      ;;
+    orders)
+      if (( CURRENT == 3 )); then
+        _describe -t order_subcommands "orders commands" order_subcommands
+        return
+      fi
+
+      case "${words[3]}" in
+        list)
+          _arguments "--json[Print JSON output]"
+          ;;
+        place)
+          _arguments \
+            "--variety[Order variety]:variety:" \
+            "--exchange[Exchange]:exchange:" \
+            "--tradingsymbol[Trading symbol]:symbol:" \
+            "--transaction_type[BUY or SELL]:type:(BUY SELL)" \
+            "--quantity[Quantity]:quantity:" \
+            "--order_type[Order type]:order type:(MARKET LIMIT SL SL-M)" \
+            "--product[Product type]:product:(CNC MIS NRML)" \
+            "--price[Limit price]:price:" \
+            "--trigger_price[Trigger price]:price:" \
+            "--validity[Order validity]:validity:(DAY IOC TTL)" \
+            "--disclosed_quantity[Disclosed quantity]:quantity:" \
+            "--tag[Client tag]:tag:" \
+            "--json[Print JSON output]"
+          ;;
+        modify)
+          _arguments \
+            "--order_id[Order ID]:order id:" \
+            "--variety[Order variety]:variety:" \
+            "--quantity[Quantity]:quantity:" \
+            "--price[Limit price]:price:" \
+            "--trigger_price[Trigger price]:price:" \
+            "--validity[Order validity]:validity:(DAY IOC TTL)" \
+            "--disclosed_quantity[Disclosed quantity]:quantity:" \
+            "--order_type[Order type]:order type:(MARKET LIMIT SL SL-M)" \
+            "--json[Print JSON output]"
+          ;;
+        cancel)
+          _arguments \
+            "--order_id[Order ID]:order id:" \
+            "--variety[Order variety]:variety:" \
+            "--parent_order_id[Parent order ID]:order id:" \
+            "--json[Print JSON output]"
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_zerokite "$@"

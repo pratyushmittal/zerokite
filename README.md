@@ -127,6 +127,7 @@ On success, `access_token` is stored at:
 
 - `zerokite help`
 - `zerokite version`
+- `zerokite completion <bash|zsh>`
 - `zerokite auth [-p <port>]`
 - `zerokite login`
 - `zerokite verify`
@@ -138,6 +139,43 @@ On success, `access_token` is stored at:
 - `zerokite orders modify --order_id <id> ...`
 - `zerokite orders cancel --order_id <id>`
 - Add `--json` to any command for machine-readable output
+
+## Shell Completions
+
+Generate completion scripts from CLI:
+
+```bash
+zerokite completion bash
+zerokite completion zsh
+```
+
+Bash setup:
+
+```bash
+mkdir -p ~/.bash_completion.d
+zerokite completion bash > ~/.bash_completion.d/zerokite
+```
+
+Load `~/.bash_completion.d/zerokite` from your `~/.bashrc` or `~/.bash_profile`.
+
+Zsh setup:
+
+```bash
+mkdir -p ~/.zfunc
+zerokite completion zsh > ~/.zfunc/_zerokite
+```
+
+Add this to `~/.zshrc` once:
+
+```bash
+fpath=(~/.zfunc $fpath)
+autoload -Uz compinit && compinit
+```
+
+Homebrew note:
+
+- Completion files are stored in this package at `completions/zerokite.bash` and `completions/_zerokite`.
+- A Homebrew formula can install these files into bash/zsh completion directories directly.
 
 ## Examples
 

@@ -44,3 +44,12 @@ zerokite auth
 ```
 
 If needed, use `-p` to run auth on a custom callback port, and set the same port in your app's redirect URL.
+
+## Optional: Enable Shell Completion
+
+```bash
+zerokite completion bash
+zerokite completion zsh
+```
+
+See `/Users/pratyush/Websites/zerokite/README.md` for bash/zsh installation steps.

@@ -14,6 +14,17 @@ Prints command usage.
 
 Prints CLI version.
 
+### `zerokite completion <bash|zsh>`
+
+Prints shell completion script to stdout.
+
+Examples:
+
+```bash
+zerokite completion bash
+zerokite completion zsh
+```
+
 ### `zerokite auth [-p <port>]`
 
 Starts callback server and login flow.

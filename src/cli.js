@@ -9,6 +9,7 @@ const { kiteRequest, exchangeRequestToken } = require("./kite");
 
 const DEFAULT_AUTH_PORT = 6583;
 const AUTH_TIMEOUT_MS = 180000;
+const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost"]);
 
 function printHelp() {
   console.log(`zerokite (Unofficial CLI for Zerodha Kite API)
@@ -19,7 +20,7 @@ Usage:
 Commands:
   help                               Show help
   version                            Show CLI version
-  auth [-p <port>]                   Start local callback server and login flow
+  auth [-p <port>]                   Start callback server and login flow
   login [-p <port>]                  Alias of auth
   verify                             Verify stored access token
   profile                            Fetch user profile
@@ -92,6 +93,13 @@ function parseRedirectUrl(port) {
   return parsedUrl;
 }
 
+function resolveListenHost(redirectUrl) {
+  if (LOOPBACK_HOSTS.has(redirectUrl.hostname)) {
+    return "127.0.0.1";
+  }
+  return "0.0.0.0";
+}
+
 function filterPayload(options, keysToIgnore) {
   const ignored = new Set(keysToIgnore);
   const payload = {};
@@ -121,12 +129,20 @@ async function runAuthCommand(command, commandArgs, jsonMode) {
 
   const redirectUrl = parseRedirectUrl(port);
   const expectedPath = redirectUrl.pathname || "/";
+  const listenHost = resolveListenHost(redirectUrl);
   const loginUrl = `https://kite.zerodha.com/connect/login?v=3&api_key=${encodeURIComponent(
     apiKey
   )}`;
 
   if (!jsonMode) {
-    console.log(`Starting local callback server on http://127.0.0.1:${port}${expectedPath}`);
+    console.log(
+      `Starting callback server on http://${listenHost}:${port}${expectedPath}`
+    );
+    if (listenHost === "0.0.0.0") {
+      console.log(
+        "Accepting callbacks on all network interfaces for non-local redirect host."
+      );
+    }
     console.log("Open this URL in your browser and complete login:");
     console.log(loginUrl);
     console.log("");
@@ -208,7 +224,7 @@ async function runAuthCommand(command, commandArgs, jsonMode) {
       finish(reject, new CliError(`Failed to start callback server: ${error.message}`));
     });
 
-    server.listen(port, "127.0.0.1");
+    server.listen(port, listenHost);
 
     timeout = setTimeout(() => {
       finish(

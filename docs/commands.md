@@ -16,7 +16,7 @@ Prints CLI version.
 
 ### `zerokite auth [-p <port>]`
 
-Starts local callback server and login flow.
+Starts callback server and login flow.
 
 ### `zerokite login`
 

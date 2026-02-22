@@ -49,22 +49,53 @@ Create a Kite Connect app and configure:
 - `api_secret`
 - Redirect URL (example): `http://127.0.0.1:6583/callback`
 
-### Recommended Redirect URL for Laptops (Dynamic IP Safe)
+## Redirect URL Scenarios
 
-If your laptop changes networks often, keep the redirect URL fixed to:
+### 1. Everything runs on your laptop (recommended)
+
+Use this redirect URL:
 
 `http://127.0.0.1:6583/callback`
 
 Why:
 
-- `127.0.0.1` is your local loopback interface (does not change with Wi-Fi/network changes).
-- You set this once in Kite Connect app settings and keep using it.
+- `127.0.0.1` does not change across networks.
+- No extra networking setup required.
 
-Then run auth:
+### 2. `zerokite auth` runs on a separate server with static public IP
+
+Use this redirect URL:
+
+`http://<static_ip>:6583/callback`
+
+Example:
+
+`http://203.0.113.10:6583/callback`
+
+### 3. `zerokite auth` runs on a separate server with dynamic IP (Tailscale)
+
+Use Tailscale so the server gets a stable private identity inside your tailnet.
+
+Steps:
+
+1. Install and sign in to Tailscale on the auth server.
+2. Install and sign in to Tailscale on the machine where you open the login URL (for example, your laptop browser).
+3. Verify both are in the same tailnet.
+4. On the auth server, get its Tailscale IP:
 
 ```bash
-zerokite auth
+tailscale ip -4
 ```
+
+5. Set Kite app redirect URL to:
+
+`http://<tailscale_ip>:6583/callback`
+
+6. Set `KITE_REDIRECT_URL` on the auth server to that same value.
+7. Run `zerokite auth` on the auth server.
+8. Open the printed Kite login URL from a browser that is also connected to the same tailnet.
+
+If MagicDNS is enabled in your tailnet, you can use `http://<device-name>.<tailnet>.ts.net:6583/callback` instead of the IP.
 
 Set environment variables:
 
@@ -76,7 +107,7 @@ export KITE_REDIRECT_URL="http://127.0.0.1:6583/callback"
 
 ## Authentication Flow
 
-`zerokite auth` starts a temporary local HTTP server and waits for Kite to redirect back with a `request_token`.
+`zerokite auth` starts a temporary callback server and waits for Kite to redirect back with a `request_token`.
 
 Default port is `6583`. Use `-p` or `--port` only when you need a different port.
 
@@ -85,6 +116,7 @@ zerokite auth
 ```
 
 If you change the port, your app's configured redirect URL must use that same port.  
+For localhost redirect URLs, `zerokite` listens on `127.0.0.1`. For non-localhost redirect URLs, it listens on all interfaces (`0.0.0.0`).
 `zerokite login` is an alias of `zerokite auth`.
 
 On success, `access_token` is stored at:

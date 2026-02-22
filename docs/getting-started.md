@@ -29,6 +29,14 @@ export KITE_API_SECRET="your_api_secret"
 export KITE_REDIRECT_URL="http://127.0.0.1:6583/callback"
 ```
 
+## Pick Redirect URL by Setup
+
+- Laptop-only: `http://127.0.0.1:6583/callback`
+- Separate server with static IP: `http://<static_ip>:6583/callback`
+- Separate server with dynamic IP: use Tailscale and set `http://<tailscale_ip>:6583/callback`
+
+See `docs/authentication.md` for full scenario steps.
+
 ## First Login
 
 ```bash

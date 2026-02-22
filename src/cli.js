@@ -442,8 +442,8 @@ async function runHoldingsCommand(command, jsonMode) {
       )
     },
     { header: "PnL", key: "pnl", align: "right", format: (value) => formatIndianNumber(value, 2) },
-    { header: "Cost Value", key: "cost_value", align: "right", format: (value) => formatIndianNumber(value, 2) },
-    { header: "Market Value", key: "market_value", align: "right", format: (value) => formatIndianNumber(value, 2) }
+    { header: "Cost Value", key: "cost_value", align: "right", format: (value) => formatIndianInteger(value) },
+    { header: "Market Value", key: "market_value", align: "right", format: (value) => formatIndianInteger(value) }
   ], {
     footerRows: [
       {

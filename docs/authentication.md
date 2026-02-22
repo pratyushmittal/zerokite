@@ -4,8 +4,7 @@
 
 ## Commands
 
-- `zerokite auth`
-- `zerokite auth -p <port>`
+- `zerokite auth` (optionally `-p <port>`)
 - `zerokite login` (alias of `zerokite auth`)
 - `zerokite verify`
 
@@ -30,7 +29,7 @@ Stored fields include:
 ## Important Rules
 
 - `KITE_REDIRECT_URL` must be set.
-- Selected port (`-p`) must match the redirect URL port.
+- If you use a custom port, it must match the redirect URL port.
 - `KITE_API_SECRET` is required for token exchange.
 - If callback is not received in time, auth command times out and must be re-run.
 

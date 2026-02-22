@@ -35,10 +35,4 @@ export KITE_REDIRECT_URL="http://127.0.0.1:6583/callback"
 zerokite auth
 ```
 
-Or use a different callback port:
-
-```bash
-zerokite auth -p 7000
-```
-
-If you use a custom port, update your app's redirect URL to the same port.
+If needed, use `-p` to run auth on a custom callback port, and set the same port in your app's redirect URL.

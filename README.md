@@ -49,6 +49,23 @@ Create a Kite Connect app and configure:
 - `api_secret`
 - Redirect URL (example): `http://127.0.0.1:6583/callback`
 
+### Recommended Redirect URL for Laptops (Dynamic IP Safe)
+
+If your laptop changes networks often, keep the redirect URL fixed to:
+
+`http://127.0.0.1:6583/callback`
+
+Why:
+
+- `127.0.0.1` is your local loopback interface (does not change with Wi-Fi/network changes).
+- You set this once in Kite Connect app settings and keep using it.
+
+Then run auth:
+
+```bash
+zerokite auth
+```
+
 Set environment variables:
 
 ```bash
@@ -61,14 +78,13 @@ export KITE_REDIRECT_URL="http://127.0.0.1:6583/callback"
 
 `zerokite auth` starts a temporary local HTTP server and waits for Kite to redirect back with a `request_token`.
 
-Default port is `6583`. Use `-p` or `--port` to change it:
+Default port is `6583`. Use `-p` or `--port` only when you need a different port.
 
 ```bash
 zerokite auth
-zerokite auth -p 7000
 ```
 
-If you change the port, your app's configured redirect URL must use the same port.  
+If you change the port, your app's configured redirect URL must use that same port.  
 `zerokite login` is an alias of `zerokite auth`.
 
 On success, `access_token` is stored at:
@@ -80,7 +96,7 @@ On success, `access_token` is stored at:
 - `zerokite help`
 - `zerokite version`
 - `zerokite auth [-p <port>]`
-- `zerokite login [-p <port>]`
+- `zerokite login`
 - `zerokite verify`
 - `zerokite profile`
 - `zerokite holdings` (includes available funds from margins)

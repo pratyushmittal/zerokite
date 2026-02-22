@@ -101,3 +101,9 @@ zoro orders place \
   --order_type MARKET \
   --product CNC
 ```
+
+## Documentation
+
+Detailed docs are available in `/docs`:
+
+- [Docs Index](./docs/index.md)

@@ -420,6 +420,7 @@ async function runHoldingsCommand(command, jsonMode) {
   const equityFunds = data.funds.equity && data.funds.equity.available
     ? data.funds.equity.available
     : {};
+  const cashBalance = numberOrZero(equityFunds.live_balance) || numberOrZero(equityFunds.cash);
 
   console.log(`Holdings: ${formatIndianInteger(holdings.length)}`);
   printTable(holdingsWithValues, [
@@ -459,7 +460,8 @@ async function runHoldingsCommand(command, jsonMode) {
   });
   console.log("");
   console.log("Available Funds (Equity):");
-  console.log(`Cash: ${formatIndianNumber(equityFunds.cash, 2)}`);
+  console.log(`Cash Balance: ${formatIndianNumber(cashBalance, 2)}`);
+  console.log(`Cash (API): ${formatIndianNumber(equityFunds.cash, 2)}`);
   console.log(`Live Balance: ${formatIndianNumber(equityFunds.live_balance, 2)}`);
   console.log(`Collateral: ${formatIndianNumber(equityFunds.collateral, 2)}`);
 }

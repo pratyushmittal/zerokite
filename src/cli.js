@@ -467,22 +467,22 @@ async function runHoldingsCommand(command, jsonMode) {
   });
   console.log("");
   console.log("Available Funds (Equity):");
-  console.log(`Live Balance (Current available balance): ${formatIndianNumber(liveBalance, 2)}`);
-  console.log(
-    `Cash (Raw cash balance in the account available for trading (also includes intraday_payin)): ${formatIndianNumber(cash, 2)}`
-  );
-  console.log(
-    `Intraday Payin (Amount that was deposited during the day): ${formatIndianNumber(intradayPayin, 2)}`
-  );
-  console.log(
-    `Adhoc Margin (Additional margin provided by the broker): ${formatIndianNumber(adhocMargin, 2)}`
-  );
-  console.log(
-    `Collateral (Margin derived from pledged stocks): ${formatIndianNumber(collateral, 2)}`
-  );
-  console.log(
-    `Net Balance (Net cash balance available for trading (intraday_payin + adhoc_margin + collateral)): ${formatIndianNumber(netBalance, 2)}`
-  );
+  const fundLines = [
+    { label: "Live Balance", value: liveBalance },
+    { label: "Cash", value: cash },
+    { label: "Intraday Payin", value: intradayPayin },
+    { label: "Adhoc Margin", value: adhocMargin },
+    { label: "Collateral", value: collateral },
+    { label: "Net Balance", value: netBalance }
+  ].filter((entry) => entry.value !== 0);
+
+  if (!fundLines.length) {
+    console.log("No non-zero balances.");
+  } else {
+    for (const entry of fundLines) {
+      console.log(`${entry.label}: ${formatIndianNumber(entry.value, 2)}`);
+    }
+  }
 }
 
 async function runPositionsCommand(command, commandArgs, jsonMode) {

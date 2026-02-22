@@ -1,6 +1,6 @@
-# Zoro-CLI (CLI for Zerodha's Kite APIs)
+# zerokite CLI (CLI for Zerodha's Kite APIs)
 
-`zoro` is an unofficial command-line client for interacting with Zerodha's Kite API.
+`zerokite` is an unofficial command-line client for interacting with Zerodha's Kite API.
 
 ## Goal
 
@@ -22,7 +22,7 @@ npm link
 2. Verify install:
 
 ```bash
-zoro help
+zerokite help
 ```
 
 ## Kite App Configuration
@@ -43,56 +43,56 @@ export KITE_REDIRECT_URL="http://127.0.0.1:6583/callback"
 
 ## Authentication Flow
 
-`zoro auth` starts a temporary local HTTP server and waits for Kite to redirect back with a `request_token`.
+`zerokite auth` starts a temporary local HTTP server and waits for Kite to redirect back with a `request_token`.
 
 Default port is `6583`. Use `-p` or `--port` to change it:
 
 ```bash
-zoro auth
-zoro auth -p 7000
+zerokite auth
+zerokite auth -p 7000
 ```
 
 If you change the port, your app's configured redirect URL must use the same port.  
-`zoro login` is an alias of `zoro auth`.
+`zerokite login` is an alias of `zerokite auth`.
 
 On success, `access_token` is stored at:
 
-`~/.zoro/session.json`
+`~/.zerokite/session.json`
 
 ## Commands
 
-- `zoro help`
-- `zoro version`
-- `zoro auth [-p <port>]`
-- `zoro login [-p <port>]`
-- `zoro verify`
-- `zoro profile`
-- `zoro holdings` (includes available funds from margins)
-- `zoro positions [--day|--net]`
-- `zoro orders list`
-- `zoro orders place ...`
-- `zoro orders modify --order_id <id> ...`
-- `zoro orders cancel --order_id <id>`
+- `zerokite help`
+- `zerokite version`
+- `zerokite auth [-p <port>]`
+- `zerokite login [-p <port>]`
+- `zerokite verify`
+- `zerokite profile`
+- `zerokite holdings` (includes available funds from margins)
+- `zerokite positions [--day|--net]`
+- `zerokite orders list`
+- `zerokite orders place ...`
+- `zerokite orders modify --order_id <id> ...`
+- `zerokite orders cancel --order_id <id>`
 - Add `--json` to any command for machine-readable output
 
 ## Examples
 
 ```bash
 # verify current token
-zoro verify
+zerokite verify
 
 # holdings + available funds
-zoro holdings
+zerokite holdings
 
 # positions
-zoro positions --net
-zoro positions --day
+zerokite positions --net
+zerokite positions --day
 
 # list orders
-zoro orders list
+zerokite orders list
 
 # place a regular market order
-zoro orders place \
+zerokite orders place \
   --variety regular \
   --exchange NSE \
   --tradingsymbol INFY \

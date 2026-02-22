@@ -26,7 +26,7 @@ Error shape:
   "command": "verify",
   "error": {
     "type": "CliError",
-    "message": "No access token found. Run `zoro auth`."
+    "message": "No access token found. Run `zerokite auth`."
   }
 }
 ```
@@ -39,6 +39,6 @@ Error shape:
 ## Common Failures
 
 - Missing `KITE_API_KEY`, `KITE_API_SECRET`, or `KITE_REDIRECT_URL`
-- No saved session at `~/.zoro/session.json`
+- No saved session at `~/.zerokite/session.json`
 - Invalid or expired `access_token`
 - Invalid order payload for `orders place/modify/cancel`

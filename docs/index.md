@@ -1,4 +1,4 @@
-# zoro Documentation
+# zerokite Documentation
 
 - [Getting Started](./getting-started.md)
 - [Authentication](./authentication.md)

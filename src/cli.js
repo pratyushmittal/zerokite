@@ -11,10 +11,10 @@ const DEFAULT_AUTH_PORT = 6583;
 const AUTH_TIMEOUT_MS = 180000;
 
 function printHelp() {
-  console.log(`zoro (Unofficial CLI for Zerodha Kite API)
+  console.log(`zerokite (Unofficial CLI for Zerodha Kite API)
 
 Usage:
-  zoro <command> [options]
+  zerokite <command> [options]
 
 Commands:
   help                               Show help
@@ -54,9 +54,9 @@ function resolveAuthContext() {
 
   assert(
     apiKey,
-    "Missing api_key. Set KITE_API_KEY or login once with `zoro auth`."
+    "Missing api_key. Set KITE_API_KEY or login once with `zerokite auth`."
   );
-  assert(accessToken, "No access token found. Run `zoro auth`.");
+  assert(accessToken, "No access token found. Run `zerokite auth`.");
 
   return {
     apiKey,
@@ -214,7 +214,7 @@ async function runAuthCommand(command, commandArgs, jsonMode) {
       finish(
         reject,
         new CliError(
-          "Timed out waiting for Kite redirect. Restart with `zoro auth` and login again."
+          "Timed out waiting for Kite redirect. Restart with `zerokite auth` and login again."
         )
       );
     }, AUTH_TIMEOUT_MS);

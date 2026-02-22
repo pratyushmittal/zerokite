@@ -18,7 +18,7 @@ npm link
 Verify:
 
 ```bash
-zoro help
+zerokite help
 ```
 
 ## Environment Variables
@@ -32,13 +32,13 @@ export KITE_REDIRECT_URL="http://127.0.0.1:6583/callback"
 ## First Login
 
 ```bash
-zoro auth
+zerokite auth
 ```
 
 Or use a different callback port:
 
 ```bash
-zoro auth -p 7000
+zerokite auth -p 7000
 ```
 
 If you use a custom port, update your app's redirect URL to the same port.

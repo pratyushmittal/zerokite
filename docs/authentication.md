@@ -1,22 +1,22 @@
 # Authentication
 
-`zoro` uses Kite Connect login and token exchange.
+`zerokite` uses Kite Connect login and token exchange.
 
 ## Commands
 
-- `zoro auth`
-- `zoro auth -p <port>`
-- `zoro login` (alias of `zoro auth`)
-- `zoro verify`
+- `zerokite auth`
+- `zerokite auth -p <port>`
+- `zerokite login` (alias of `zerokite auth`)
+- `zerokite verify`
 
 ## Flow
 
-1. `zoro auth` starts a temporary local HTTP server on `127.0.0.1` (default port `6583`).
+1. `zerokite auth` starts a temporary local HTTP server on `127.0.0.1` (default port `6583`).
 2. CLI prints the Kite login URL for your `KITE_API_KEY`.
 3. You open the URL and complete login/consent.
 4. Kite redirects to `KITE_REDIRECT_URL` with `request_token`.
 5. CLI exchanges `request_token` at `/session/token`.
-6. CLI stores session at `~/.zoro/session.json`.
+6. CLI stores session at `~/.zerokite/session.json`.
 
 Stored fields include:
 
@@ -39,7 +39,7 @@ Stored fields include:
 Use:
 
 ```bash
-zoro verify
+zerokite verify
 ```
 
 `verify` calls `/user/profile` using your stored `access_token`.

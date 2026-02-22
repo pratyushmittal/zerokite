@@ -2,7 +2,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
-const SESSION_DIR = path.join(os.homedir(), ".zoro");
+const SESSION_DIR = path.join(os.homedir(), ".zerokite");
 const SESSION_FILE = path.join(SESSION_DIR, "session.json");
 
 function ensureSessionDir() {

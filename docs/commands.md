@@ -6,31 +6,31 @@
 
 ## Core Commands
 
-### `zoro help`
+### `zerokite help`
 
 Prints command usage.
 
-### `zoro version`
+### `zerokite version`
 
 Prints CLI version.
 
-### `zoro auth [-p <port>]`
+### `zerokite auth [-p <port>]`
 
 Starts local callback server and login flow.
 
-### `zoro login [-p <port>]`
+### `zerokite login [-p <port>]`
 
-Alias of `zoro auth`.
+Alias of `zerokite auth`.
 
-### `zoro verify`
+### `zerokite verify`
 
 Verifies whether stored `access_token` is valid.
 
-### `zoro profile`
+### `zerokite profile`
 
 Fetches profile details from `/user/profile`.
 
-### `zoro holdings`
+### `zerokite holdings`
 
 Fetches:
 
@@ -39,18 +39,18 @@ Fetches:
 
 In non-JSON mode, prints holdings table and available equity funds.
 
-### `zoro positions [--day|--net]`
+### `zerokite positions [--day|--net]`
 
 Fetches positions from `/portfolio/positions`.
 
 - Default scope: `--net`
 - Use `--day` for intraday/day scope
 
-### `zoro orders list`
+### `zerokite orders list`
 
 Lists orders from `/orders`.
 
-### `zoro orders place [--variety regular] ...`
+### `zerokite orders place [--variety regular] ...`
 
 Places an order to `/orders/:variety`.
 
@@ -68,7 +68,7 @@ Any extra valid Kite order fields may also be passed as flags.
 Example:
 
 ```bash
-zoro orders place \
+zerokite orders place \
   --variety regular \
   --exchange NSE \
   --tradingsymbol INFY \
@@ -78,7 +78,7 @@ zoro orders place \
   --product CNC
 ```
 
-### `zoro orders modify --order_id <id> [--variety regular] ...`
+### `zerokite orders modify --order_id <id> [--variety regular] ...`
 
 Modifies order at `/orders/:variety/:order_id`.
 
@@ -87,6 +87,6 @@ Requires:
 - order id via `--order_id` (or first positional id)
 - at least one field to modify
 
-### `zoro orders cancel --order_id <id> [--variety regular]`
+### `zerokite orders cancel --order_id <id> [--variety regular]`
 
 Cancels order at `/orders/:variety/:order_id`.

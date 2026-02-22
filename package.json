@@ -1,14 +1,14 @@
 {
   "name": "zerokite",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "Unofficial CLI for Zerodha Kite API",
   "main": "src/cli.js",
   "bin": {
-    "zoro": "bin/zoro.js"
+    "zerokite": "bin/zerokite.js"
   },
   "scripts": {
-    "start": "node bin/zoro.js",
-    "help": "node bin/zoro.js help"
+    "start": "node bin/zerokite.js",
+    "help": "node bin/zerokite.js help"
   },
   "keywords": [
     "zerodha",

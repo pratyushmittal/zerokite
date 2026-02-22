@@ -1,6 +1,6 @@
 {
   "name": "zerokite",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "description": "Unofficial CLI for Zerodha Kite API",
   "main": "src/cli.js",
   "bin": {

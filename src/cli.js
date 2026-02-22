@@ -374,36 +374,76 @@ async function runHoldingsCommand(command, jsonMode) {
     funds: marginsResponse.data || {}
   };
 
+  const holdings = data.holdings;
+  const holdingsWithValues = holdings.map((holding) => {
+    const quantity = numberOrZero(holding.quantity);
+    const averagePrice = numberOrZero(holding.average_price);
+    const lastPrice = numberOrZero(holding.last_price);
+    return {
+      ...holding,
+      cost_value: quantity * averagePrice,
+      market_value: quantity * lastPrice
+    };
+  });
+  const totals = holdingsWithValues.reduce(
+    (sum, holding) => ({
+      quantity: sum.quantity + numberOrZero(holding.quantity),
+      pnl: sum.pnl + numberOrZero(holding.pnl),
+      cost_value: sum.cost_value + numberOrZero(holding.cost_value),
+      market_value: sum.market_value + numberOrZero(holding.market_value)
+    }),
+    {
+      quantity: 0,
+      pnl: 0,
+      cost_value: 0,
+      market_value: 0
+    }
+  );
+
   if (jsonMode) {
-    printSuccessJson(command, data);
+    printSuccessJson(command, {
+      ...data,
+      totals
+    });
     return;
   }
 
-  const holdings = data.holdings;
   const equityFunds = data.funds.equity && data.funds.equity.available
     ? data.funds.equity.available
     : {};
-  const totalCostValue = holdings.reduce(
-    (sum, holding) => sum + numberOrZero(holding.quantity) * numberOrZero(holding.average_price),
-    0
-  );
-  const totalLtpValue = holdings.reduce(
-    (sum, holding) => sum + numberOrZero(holding.quantity) * numberOrZero(holding.last_price),
-    0
-  );
 
   console.log(`Holdings: ${holdings.length}`);
-  printTable(holdings, [
+  printTable(holdingsWithValues, [
     { header: "Symbol", key: "tradingsymbol" },
     { header: "Qty", key: "quantity", align: "right" },
-    { header: "Avg", key: "average_price", align: "right", format: (value) => formatFixed(value, 2) },
-    { header: "LTP", key: "last_price", align: "right", format: (value) => formatFixed(value, 2) },
-    { header: "PnL", key: "pnl", align: "right", format: (value) => formatFixed(value, 2) }
-  ]);
-  console.log("");
-  console.log("Holding Totals:");
-  console.log(`Cost Value: ${formatFixed(totalCostValue, 2)}`);
-  console.log(`LTP Value: ${formatFixed(totalLtpValue, 2)}`);
+    {
+      header: "Avg",
+      key: "average_price",
+      align: "right",
+      format: (value) => (value === "" || value === null || value === undefined ? "" : formatFixed(value, 2))
+    },
+    {
+      header: "LTP",
+      key: "last_price",
+      align: "right",
+      format: (value) => (value === "" || value === null || value === undefined ? "" : formatFixed(value, 2))
+    },
+    { header: "PnL", key: "pnl", align: "right", format: (value) => formatFixed(value, 2) },
+    { header: "Cost Value", key: "cost_value", align: "right", format: (value) => formatFixed(value, 2) },
+    { header: "Market Value", key: "market_value", align: "right", format: (value) => formatFixed(value, 2) }
+  ], {
+    footerRows: [
+      {
+        tradingsymbol: "TOTAL",
+        quantity: totals.quantity,
+        average_price: "",
+        last_price: "",
+        pnl: totals.pnl,
+        cost_value: totals.cost_value,
+        market_value: totals.market_value
+      }
+    ]
+  });
   console.log("");
   console.log("Available Funds (Equity):");
   console.log(`Cash: ${equityFunds.cash || 0}`);

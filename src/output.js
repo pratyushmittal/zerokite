@@ -1,11 +1,13 @@
-function printTable(rows, columns) {
-  if (!rows.length) {
+function printTable(rows, columns, options = {}) {
+  const footerRows = Array.isArray(options.footerRows) ? options.footerRows : [];
+
+  if (!rows.length && !footerRows.length) {
     console.log("No records found.");
     return;
   }
 
   const widths = columns.map((column) => column.header.length);
-  const normalizedRows = rows.map((row) =>
+  const normalizeRow = (row) =>
     columns.map((column, columnIndex) => {
       const value = row[column.key];
       const formattedValue = column.format ? column.format(value, row) : value;
@@ -17,8 +19,10 @@ function printTable(rows, columns) {
       widths[columnIndex] = Math.max(widths[columnIndex], text.length);
       widths[columnIndex] = Math.max(widths[columnIndex], finalText.length);
       return finalText;
-    })
-  );
+    });
+
+  const normalizedRows = rows.map((row) => normalizeRow(row));
+  const normalizedFooterRows = footerRows.map((row) => normalizeRow(row));
 
   const header = columns
     .map((column, index) => {
@@ -41,6 +45,21 @@ function printTable(rows, columns) {
       })
       .join("  ");
     console.log(line);
+  }
+
+  if (normalizedFooterRows.length) {
+    console.log(divider);
+    for (const normalizedFooterRow of normalizedFooterRows) {
+      const line = normalizedFooterRow
+        .map((cell, index) => {
+          if (columns[index].align === "right") {
+            return cell.padStart(widths[index], " ");
+          }
+          return cell.padEnd(widths[index], " ");
+        })
+        .join("  ");
+      console.log(line);
+    }
   }
 }
 

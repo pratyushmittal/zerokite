@@ -85,8 +85,17 @@ function numberOrZero(value) {
   return Number.isFinite(num) ? num : 0;
 }
 
-function formatFixed(value, decimals = 2) {
-  return numberOrZero(value).toFixed(decimals);
+function formatIndianNumber(value, decimals = 2) {
+  return numberOrZero(value).toLocaleString("en-IN", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  });
+}
+
+function formatIndianInteger(value) {
+  return numberOrZero(value).toLocaleString("en-IN", {
+    maximumFractionDigits: 0
+  });
 }
 
 function resolveAuthContext() {
@@ -412,25 +421,29 @@ async function runHoldingsCommand(command, jsonMode) {
     ? data.funds.equity.available
     : {};
 
-  console.log(`Holdings: ${holdings.length}`);
+  console.log(`Holdings: ${formatIndianInteger(holdings.length)}`);
   printTable(holdingsWithValues, [
     { header: "Symbol", key: "tradingsymbol" },
-    { header: "Qty", key: "quantity", align: "right" },
+    { header: "Qty", key: "quantity", align: "right", format: (value) => formatIndianInteger(value) },
     {
       header: "Avg",
       key: "average_price",
       align: "right",
-      format: (value) => (value === "" || value === null || value === undefined ? "" : formatFixed(value, 2))
+      format: (value) => (
+        value === "" || value === null || value === undefined ? "" : formatIndianNumber(value, 2)
+      )
     },
     {
       header: "LTP",
       key: "last_price",
       align: "right",
-      format: (value) => (value === "" || value === null || value === undefined ? "" : formatFixed(value, 2))
+      format: (value) => (
+        value === "" || value === null || value === undefined ? "" : formatIndianNumber(value, 2)
+      )
     },
-    { header: "PnL", key: "pnl", align: "right", format: (value) => formatFixed(value, 2) },
-    { header: "Cost Value", key: "cost_value", align: "right", format: (value) => formatFixed(value, 2) },
-    { header: "Market Value", key: "market_value", align: "right", format: (value) => formatFixed(value, 2) }
+    { header: "PnL", key: "pnl", align: "right", format: (value) => formatIndianNumber(value, 2) },
+    { header: "Cost Value", key: "cost_value", align: "right", format: (value) => formatIndianNumber(value, 2) },
+    { header: "Market Value", key: "market_value", align: "right", format: (value) => formatIndianNumber(value, 2) }
   ], {
     footerRows: [
       {
@@ -446,9 +459,9 @@ async function runHoldingsCommand(command, jsonMode) {
   });
   console.log("");
   console.log("Available Funds (Equity):");
-  console.log(`Cash: ${equityFunds.cash || 0}`);
-  console.log(`Live Balance: ${equityFunds.live_balance || 0}`);
-  console.log(`Collateral: ${equityFunds.collateral || 0}`);
+  console.log(`Cash: ${formatIndianNumber(equityFunds.cash, 2)}`);
+  console.log(`Live Balance: ${formatIndianNumber(equityFunds.live_balance, 2)}`);
+  console.log(`Collateral: ${formatIndianNumber(equityFunds.collateral, 2)}`);
 }
 
 async function runPositionsCommand(command, commandArgs, jsonMode) {

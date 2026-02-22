@@ -56,54 +56,6 @@ Create a Kite Connect app and configure:
 - `api_secret`
 - Redirect URL (example): `http://127.0.0.1:6583/callback`
 
-## Redirect URL Scenarios
-
-### 1. Everything runs on your laptop (recommended)
-
-Use this redirect URL:
-
-`http://127.0.0.1:6583/callback`
-
-Why:
-
-- `127.0.0.1` does not change across networks.
-- No extra networking setup required.
-
-### 2. `zerokite auth` runs on a separate server with static public IP
-
-Use this redirect URL:
-
-`http://<static_ip>:6583/callback`
-
-Example:
-
-`http://203.0.113.10:6583/callback`
-
-### 3. `zerokite auth` runs on a separate server with dynamic IP (Tailscale)
-
-Use Tailscale so the server gets a stable private identity inside your tailnet.
-
-Steps:
-
-1. Install and sign in to Tailscale on the auth server.
-2. Install and sign in to Tailscale on the machine where you open the login URL (for example, your laptop browser).
-3. Verify both are in the same tailnet.
-4. On the auth server, get its Tailscale IP:
-
-```bash
-tailscale ip -4
-```
-
-5. Set Kite app redirect URL to:
-
-`http://<tailscale_ip>:6583/callback`
-
-6. Set `KITE_REDIRECT_URL` on the auth server to that same value.
-7. Run `zerokite auth` on the auth server.
-8. Open the printed Kite login URL from a browser that is also connected to the same tailnet.
-
-If MagicDNS is enabled in your tailnet, you can use `http://<device-name>.<tailnet>.ts.net:6583/callback` instead of the IP.
-
 Set environment variables:
 
 ```bash
@@ -183,3 +135,4 @@ Detailed docs are available in `/docs`:
 ## More
 
 - [Shell Completions Guide](./docs/completions.md)
+- [Redirect URL Scenarios](./docs/authentication.md#redirect-url-scenarios)

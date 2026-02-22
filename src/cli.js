@@ -441,7 +441,7 @@ async function runHoldingsCommand(command, jsonMode) {
         value === "" || value === null || value === undefined ? "" : formatIndianNumber(value, 2)
       )
     },
-    { header: "PnL", key: "pnl", align: "right", format: (value) => formatIndianNumber(value, 2) },
+    { header: "PnL", key: "pnl", align: "right", format: (value) => formatIndianInteger(value) },
     { header: "Cost Value", key: "cost_value", align: "right", format: (value) => formatIndianInteger(value) },
     { header: "Market Value", key: "market_value", align: "right", format: (value) => formatIndianInteger(value) }
   ], {

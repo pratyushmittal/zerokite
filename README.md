@@ -51,12 +51,10 @@ zerokite help
 Create a Kite Connect app and configure:
 
 - Create app: https://developers.kite.trade/create
+- Choose "Personal App".
+- Enter `http://127.0.0.1:6583/callback` in the redirect url field.
 
-- `api_key`
-- `api_secret`
-- Redirect URL (example): `http://127.0.0.1:6583/callback`
-
-Set environment variables:
+Copy the API KEY and API Secret values.
 
 ```bash
 export KITE_API_KEY="your_api_key"

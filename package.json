@@ -1,14 +1,14 @@
 {
-  "name": "zerodha-cli",
+  "name": "zoro-cli",
   "version": "0.1.0",
-  "description": "CLI for Zerodha Kite API",
+  "description": "Unofficial CLI for Zerodha Kite API",
   "main": "src/cli.js",
   "bin": {
-    "zerodha-cli": "bin/zerodha-cli.js"
+    "zoro": "bin/zoro.js"
   },
   "scripts": {
-    "start": "node bin/zerodha-cli.js",
-    "help": "node bin/zerodha-cli.js help"
+    "start": "node bin/zoro.js",
+    "help": "node bin/zoro.js help"
   },
   "keywords": [
     "zerodha",

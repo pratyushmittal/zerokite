@@ -420,7 +420,14 @@ async function runHoldingsCommand(command, jsonMode) {
   const equityFunds = data.funds.equity && data.funds.equity.available
     ? data.funds.equity.available
     : {};
-  const cashBalance = numberOrZero(equityFunds.live_balance) || numberOrZero(equityFunds.cash);
+  const liveBalance = numberOrZero(equityFunds.live_balance);
+  const cash = numberOrZero(equityFunds.cash);
+  const intradayPayin = numberOrZero(equityFunds.intraday_payin);
+  const adhocMargin = numberOrZero(equityFunds.adhoc_margin);
+  const collateral = numberOrZero(equityFunds.collateral);
+  const netBalance = equityFunds.net !== undefined
+    ? numberOrZero(equityFunds.net)
+    : intradayPayin + adhocMargin + collateral;
 
   console.log(`Holdings: ${formatIndianInteger(holdings.length)}`);
   printTable(holdingsWithValues, [
@@ -460,10 +467,22 @@ async function runHoldingsCommand(command, jsonMode) {
   });
   console.log("");
   console.log("Available Funds (Equity):");
-  console.log(`Cash Balance: ${formatIndianNumber(cashBalance, 2)}`);
-  console.log(`Cash (API): ${formatIndianNumber(equityFunds.cash, 2)}`);
-  console.log(`Live Balance: ${formatIndianNumber(equityFunds.live_balance, 2)}`);
-  console.log(`Collateral: ${formatIndianNumber(equityFunds.collateral, 2)}`);
+  console.log(`Live Balance (Current available balance): ${formatIndianNumber(liveBalance, 2)}`);
+  console.log(
+    `Cash (Raw cash balance in the account available for trading (also includes intraday_payin)): ${formatIndianNumber(cash, 2)}`
+  );
+  console.log(
+    `Intraday Payin (Amount that was deposited during the day): ${formatIndianNumber(intradayPayin, 2)}`
+  );
+  console.log(
+    `Adhoc Margin (Additional margin provided by the broker): ${formatIndianNumber(adhocMargin, 2)}`
+  );
+  console.log(
+    `Collateral (Margin derived from pledged stocks): ${formatIndianNumber(collateral, 2)}`
+  );
+  console.log(
+    `Net Balance (Net cash balance available for trading (intraday_payin + adhoc_margin + collateral)): ${formatIndianNumber(netBalance, 2)}`
+  );
 }
 
 async function runPositionsCommand(command, commandArgs, jsonMode) {

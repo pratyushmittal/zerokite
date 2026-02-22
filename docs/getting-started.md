@@ -52,4 +52,4 @@ zerokite completion bash
 zerokite completion zsh
 ```
 
-See `/Users/pratyush/Websites/zerokite/README.md` for bash/zsh installation steps.
+See `docs/completions.md` for bash/zsh installation steps.
